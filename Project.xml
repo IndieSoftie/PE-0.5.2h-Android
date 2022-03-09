@@ -2,13 +2,10 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Psych Engine" file="PsychEngine" packageName="com.shadowmario.psychengine" package="com.shadowmario.psychengine" main="Main" version="0.2.7" company="ShadowMario" />
+	<app title="Friday Night Strikin'" file="Strikin" packageName="com.shadowmario.psychengine" package="com.shadowmario.psychengine" main="Main" version="2.0.1" company="ShadowMario" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
-
-	<!-- NOTE TO SELF: DISABLE THIS IF ISSUES ARE FOUND -->
-	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/> <!-- stable luas PUT AFTER FIRST LINE WITH APP NAME AND ETC -->
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -30,7 +27,7 @@
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false"/>
+	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false"/>
 
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
@@ -39,27 +36,18 @@
 
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
-	<set name="BUILD_DIR" value="export/32bit" if="32bits" />
+	<set name="BUILD_DIR" value="export/32bit" if="32" />
 
 	<classpath name="source" />
-	
-	<!-- PSYCH ENGINE CUSTOMIZATION -->
-	<define name="MODS_ALLOWED" if="desktop || android" />
-	<define name="LUA_ALLOWED" if="desktop || android" />
-	<define name="ACHIEVEMENTS_ALLOWED" />
-	<define name="VIDEOS_ALLOWED" if="web || windows || android" unless="32bits"/>
-	<define name="PSYCH_WATERMARKS"/> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
-	<define name="TITLE_SCREEN_EASTER_EGG" if="officialBuild"/> <!-- DELETE THE if="officialBuild" for enabling this on an unofficial build -->
 
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3"  unless="web"/>
-	<section if="TITLE_SCREEN_EASTER_EGG">
-		<assets path="assets/secrets" rename="assets" exclude="*.ogg" if="web"/>
-		<assets path="assets/secrets" rename="assets" exclude="*.mp3"  unless="web"/>
-	</section>
-
-	<!-- DONT ENABLE THIS -->
-	<define name="CHECK_FOR_UPDATES" if="desktop officialBuild"/>
+	
+	<!-- PSYCH ENGINE CUSTOMIZATION -->
+	<define name="MODS_ALLOWED" if="desktop" />
+	<define name="LUA_ALLOWED" if="windows" />
+	<define name="ACHIEVEMENTS_ALLOWED" />
+	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32"/>
 
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />
@@ -74,6 +62,7 @@
 		<library name="week4"         preload="true" />
 		<library name="week5"         preload="true" />
 		<library name="week6"         preload="true" />
+		<library name="strikin"         preload="true" />
 	</section>
 	
 	<section if="NO_PRELOAD_ALL">
@@ -84,6 +73,7 @@
 		<library name="week4"         preload="false" />
 		<library name="week5"         preload="false" />
 		<library name="week6"         preload="false" />
+		<library name="strikin"         preload="false" />
 	</section>
 	
 	<assets path="plugins/"             rename=''               if="VIDEOS_ALLOWED windows" />
@@ -103,12 +93,14 @@
 	<assets path="assets/week5"         library="week5"         exclude="*.mp3" unless="web"/>
 	<assets path="assets/week6"         library="week6"         exclude="*.ogg" if="web"/>
 	<assets path="assets/week6"         library="week6"         exclude="*.mp3" unless="web"/>
+	<assets path="assets/strikin"         library="strikin"         exclude="*.ogg" if="web"/>
+	<assets path="assets/strikin"         library="strikin"         exclude="*.mp3" unless="web"/>
 	
 	<assets path='example_mods' rename='mods' embed='false' if="MODS_ALLOWED"/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<!-- <template path='mods' /> -->
 	
-	<!-- assets path="CHANGELOG.md" rename='changelog.txt' -->
+	<!-- assets path="CHANGELOG.md" rename='changelog.txt' --/>
 
 	<!-- NOTE FOR FUTURE SELF SINCE FONTS ARE ALWAYS FUCKY 
 		TO FIX ONE OF THEM, I CONVERTED IT TO OTF. DUNNO IF YOU NEED TO
@@ -132,11 +124,6 @@
 	<!--<haxelib name="polymod"/> -->
 	<haxelib name="discord_rpc" if="desktop"/>
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
-        <haxelib name="extension-webview" if="android"/>
-        <haxelib name="AndroidTools" if="android"/>
-
-        <config:android permission="android.permission.READ_EXTERNAL_STORAGE" if="android"/>
-        <config:android permission="android.permission.WRITE_EXTERNAL_STORAGE" if="android"/>
 
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->
@@ -175,10 +162,6 @@
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
-
-	<!-- Akways enable Null Object Reference check -->
-	<haxedef name="HXCPP_CHECK_POINTER" if="release" />
-	<haxedef name="HXCPP_STACK_LINE" if="release" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 
